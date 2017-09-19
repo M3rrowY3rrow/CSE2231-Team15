@@ -71,10 +71,11 @@ public class Map4<K, V> extends MapSecondary<K, V> {
     private static int mod(int a, int b) {
         assert b > 0 : "Violation of: b > 0";
 
-        // TODO - fill in body
-
-        // This line added just to make the component compilable.
-        return 0;
+        int c = a % b;
+        if (c < 0) {
+            c += b;
+        }
+        return c;
     }
 
     /**
@@ -93,7 +94,7 @@ public class Map4<K, V> extends MapSecondary<K, V> {
      * </pre>
      */
     private void createNewRep(int hashTableSize) {
-
+        //I'm not sure if this is correct
         this.createNewRep(DEFAULT_HASH_TABLE_SIZE);
 
     }
@@ -106,8 +107,9 @@ public class Map4<K, V> extends MapSecondary<K, V> {
      * No-argument constructor.
      */
     public Map4() {
+        //default go into this one I think
+        this.createNewRep(DEFAULT_HASH_TABLE_SIZE);
 
-        // TODO - fill in body
 
     }
 
@@ -172,7 +174,9 @@ public class Map4<K, V> extends MapSecondary<K, V> {
         assert value != null : "Violation of: value is not null";
         assert !this.hasKey(key) : "Violation of: key is not in DOMAIN(this)";
 
-        // TODO - fill in body
+        this.size++;
+        this.hashTable.entry(mod(key.hashCode(), this.hashTable.length()))
+                .add(key, value);
 
     }
 
@@ -192,10 +196,14 @@ public class Map4<K, V> extends MapSecondary<K, V> {
     public final Pair<K, V> removeAny() {
         assert this.size() > 0 : "Violation of: this /= empty_set";
 
-        // TODO - fill in body
+        //commented out was what I tried, but I think the way I did it should work
+        this.size--;
+        Pair<K, V> uno = this.hashTable.entry(0).removeAny();
+        //        Pair<K, V> a = this.hashTable
+        //                .entry((mod(uno.hashCode(), this.hashTable.length())))
+        //                .remove(uno.key());
 
-        // This line added just to make the component compilable.
-        return null;
+        return uno;
     }
 
     @Override
@@ -211,10 +219,10 @@ public class Map4<K, V> extends MapSecondary<K, V> {
     public final boolean hasKey(K key) {
         assert key != null : "Violation of: key is not null";
 
-        // TODO - fill in body
-
-        // This line added just to make the component compilable.
-        return false;
+        boolean a = this.hashTable
+                .entry(mod(key.hashCode(), this.hashTable.length()))
+                .hasKey(key);
+        return a;
     }
 
     @Override
