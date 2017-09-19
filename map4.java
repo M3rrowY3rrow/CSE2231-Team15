@@ -4,7 +4,6 @@ import java.util.NoSuchElementException;
 import components.array.Array;
 import components.map.Map;
 import components.map.MapSecondary;
-//prem is pretty cool
 
 /**
  * {@code Map} represented as a hash table using {@code Map}s for the buckets,
@@ -95,7 +94,7 @@ public class Map4<K, V> extends MapSecondary<K, V> {
      */
     private void createNewRep(int hashTableSize) {
 
-        // TODO - fill in body
+        this.createNewRep(DEFAULT_HASH_TABLE_SIZE);
 
     }
 
@@ -122,7 +121,7 @@ public class Map4<K, V> extends MapSecondary<K, V> {
      */
     public Map4(int hashTableSize) {
 
-        // TODO - fill in body
+        this.createNewRep(hashTableSize);
 
     }
 
@@ -182,10 +181,11 @@ public class Map4<K, V> extends MapSecondary<K, V> {
         assert key != null : "Violation of: key is not null";
         assert this.hasKey(key) : "Violation of: key is in DOMAIN(this)";
 
-        // TODO - fill in body
-
-        // This line added just to make the component compilable.
-        return null;
+        this.size--;
+        Pair<K, V> pair = this.hashTable
+                .entry(mod(key.hashCode(), this.hashTable.length()))
+                .remove(key);
+        return pair;
     }
 
     @Override
@@ -203,10 +203,8 @@ public class Map4<K, V> extends MapSecondary<K, V> {
         assert key != null : "Violation of: key is not null";
         assert this.hasKey(key) : "Violation of: key is in DOMAIN(this)";
 
-        // TODO - fill in body
-
-        // This line added just to make the component compilable.
-        return null;
+        return this.hashTable
+                .entry(mod(key.hashCode(), this.hashTable.length())).value(key);
     }
 
     @Override
@@ -222,10 +220,7 @@ public class Map4<K, V> extends MapSecondary<K, V> {
     @Override
     public final int size() {
 
-        // TODO - fill in body
-
-        // This line added just to make the component compilable.
-        return 0;
+        return this.size;
     }
 
     @Override
