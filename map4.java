@@ -94,9 +94,11 @@ public class Map4<K, V> extends MapSecondary<K, V> {
      * </pre>
      */
     private void createNewRep(int hashTableSize) {
-        //I'm not sure if this is correct
-        this.createNewRep(DEFAULT_HASH_TABLE_SIZE);
-
+        this.hashTable = new Array1L<>(hashTableSize);
+        for (int i = 0; i < hashTableSize; i++) {
+            this.hashTable.setEntry(i, new Map2<K, V>());
+        }
+        this.size = 0;
     }
 
     /*
