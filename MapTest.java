@@ -326,5 +326,129 @@ public abstract class MapTest {
         assertEquals(a2, b2);
         assertEquals(qExpected, q);
     }
+    
+      /*
+     * Test cases for size.
+     */
+
+    @Test
+    public void testSizeBoundary() {
+        /*
+         * Set up variables
+         */
+        Map<String, String> mapT = this.constructorTest();
+        Map<String, String> mapR = this.constructorRef();
+        /*
+         * Assert that values of variables match expectations
+         */
+        assertEquals(mapR.size(), mapT.size());
+    }
+
+    @Test
+    public void testSizeRoutine() {
+        /*
+         * Set up variables
+         */
+        Map<String, String> mapT = this.createFromArgsTest("34", "69", "78",
+                "43");
+        Map<String, String> mapR = this.createFromArgsRef("34", "69", "78",
+                "43");
+        /*
+         * Assert that values of variables match expectations
+         */
+        assertEquals(mapR.size(), mapT.size());
+    }
+
+    /*
+     * Test cases for value.
+     */
+
+    @Test
+    public void testValueBoundary() {
+        /*
+         * Set up variables
+         */
+        Map<String, String> mapT = this.createFromArgsTest("34", "69");
+        Map<String, String> mapR = this.createFromArgsRef("34", "69");
+        /*
+         * Call method under test
+         */
+        String valT = mapT.value("34");
+        String valR = mapR.value("34");
+        /*
+         * Assert that values of variables match expectations
+         */
+        assertEquals(mapR, mapT);
+        assertEquals(valR, valT);
+    }
+
+    /**
+     * Test case for value. Routine condition.
+     */
+    @Test
+    public void testValueBiggerSize() {
+        /*
+         * Set up variables
+         */
+        Map<String, String> mapT = this.createFromArgsTest("34", "69", "78",
+                "43");
+        Map<String, String> mapR = this.createFromArgsRef("34", "69", "78",
+                "43");
+        /*
+         * Call method under test
+         */
+        String valT = mapT.value("78");
+        String valR = mapR.value("78");
+        /*
+         * Assert that values of variables match expectations
+         */
+        assertEquals(mapR, mapT);
+        assertEquals(valR, valT);
+    }
+
+    /*
+     * Test cases for remove.
+     */
+
+    @Test
+    public void testRemoveBoundary() {
+        /*
+         * Set up variables
+         */
+        Map<String, String> mapT = this.createFromArgsTest("34", "69");
+        Map<String, String> mapR = this.createFromArgsRef("34", "69");
+        /*
+         * Call method under test
+         */
+        Map.Pair<String, String> remT = mapT.remove("34");
+        Map.Pair<String, String> remR = mapR.remove("34");
+        /*
+         * Assert that values of variables match expectations
+         */
+        assertEquals(mapR, mapT);
+        assertEquals(remR, remT);
+    }
+
+    @Test
+    public void testRemoveRoutine() {
+        /*
+         * Set up variables
+         */
+        Map<String, String> mapT = this.createFromArgsTest("34", "69", "78",
+                "43");
+        Map<String, String> mapR = this.createFromArgsRef("34", "69", "78",
+                "43");
+        /*
+         * Call method under test
+         */
+        Map.Pair<String, String> remT = mapT.remove("34");
+        Map.Pair<String, String> remR = mapR.remove("34");
+        /*
+         * Assert that values of variables match expectations
+         */
+        assertEquals(mapR, mapT);
+        assertEquals(remR, remT);
+    }
+
 
 }
