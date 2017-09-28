@@ -1,6 +1,7 @@
 import java.util.Iterator;
 
 import components.binarytree.BinaryTree;
+import components.binarytree.BinaryTree1;
 import components.set.Set;
 import components.set.SetSecondary;
 
@@ -50,10 +51,32 @@ public class Set3a<T extends Comparable<T>> extends SetSecondary<T> {
         assert t != null : "Violation of: t is not null";
         assert x != null : "Violation of: x is not null";
 
-        // TODO - fill in body p
+        //creates a boolean check variable
+        boolean isInTree = false;
+        //if tree is not empty
+        if (t.size() != 0) {
+            //create two empty trees
+            BinaryTree<T> left = t.newInstance();
+            BinaryTree<T> right = t.newInstance();
+            //disassemble tree into left and right and root
+            T root = t.disassemble(left, right);
+            //if x is root change boolean variable to true
+            //if in the left subtree check recursively if x in that tree
+            //if in the right subtree check recursively if x in that tree
+            if (x.equals(root)) {
+                isInTree = true;
+            } else if (x.compareTo(root) < 0) {
+                isInTree = isInTree(left, x);
 
-        // This line added just to make the component compilable.
-        return false;
+            } else {
+                isInTree = isInTree(right, x);
+
+            }
+            //assemble back tree from left right and root
+            t.assemble(root, left, right);
+        }
+        //return boolean variable
+        return isInTree;
     }
 
     /**
@@ -75,29 +98,32 @@ public class Set3a<T extends Comparable<T>> extends SetSecondary<T> {
         assert t != null : "Violation of: t is not null";
         assert x != null : "Violation of: x is not null";
 
+        //instantiate left and right trees and comparison int
         int comp = 0;
         BinaryTree<T> left = t.newInstance();
         BinaryTree<T> right = t.newInstance();
-        if (t.size() > 1) {
+        //if the size of the tree is greater than 0
+        if (t.size() > 0) {
+            //disassemble the tree
             T root = t.disassemble(left, right);
+            //compare the x to the root
             comp = x.compareTo(root);
+            //if x is greater than the root
             if (comp > 0) {
+                //go into the right tree recursively
                 insertInTree(right, x);
+                //if the x is less than the root
             } else if (comp < 0) {
+                //go into the left root recursively
                 insertInTree(left, x);
             }
+            //assemble the tree
             t.assemble(root, left, right);
+            //if the size is 0
         } else {
-            T root = t.disassemble(left, right);
-            comp = x.compareTo(root);
-            if (comp > 0) {
-                right.replaceRoot(x);
-            } else if (comp < 0) {
-                left.replaceRoot(x);
-            }
-            t.assemble(root, left, right);
+            //insert x using assemble
+            t.assemble(x, left, right);
         }
-        
 
     }
 
@@ -119,10 +145,25 @@ public class Set3a<T extends Comparable<T>> extends SetSecondary<T> {
     private static <T> T removeSmallest(BinaryTree<T> t) {
         assert t != null : "Violation of: t is not null";
 
-        // TODO - fill in body p
-
-        // This line added just to make the component compilable.
-        return null;
+        //set the smallest to the root
+        T small = t.root();
+        //create two empty trees
+        BinaryTree<T> left = t.newInstance();
+        BinaryTree<T> right = t.newInstance();
+        //disassemble tree into left and right and root
+        T root = t.disassemble(left, right);
+        //if left is not empty, then go into that tree recursively until
+        //it founds the left most root/node
+        if (left.size() != 0) {
+            small = removeSmallest(left);
+            //assemble back tree from left right and root
+            t.assemble(root, left, right);
+        } else {
+            //if nothing in left transfer from right
+            t.transferFrom(right);
+        }
+        //return the smallest
+        return small;
     }
 
     /**
@@ -148,33 +189,51 @@ public class Set3a<T extends Comparable<T>> extends SetSecondary<T> {
         assert t != null : "Violation of: t is not null";
         assert x != null : "Violation of: x is not null";
 
+        //instantiate comparison int, remove, root, and left and right trees
         int comp = x.compareTo(t.root());
         T remove = t.root();
         T root = t.root();
         BinaryTree<T> left = t.newInstance();
         BinaryTree<T> right = t.newInstance();
+        //if x is smaller than the root
         if (comp < 0) {
+            //disassemble the tree
             root = t.disassemble(left, right);
+            //recursively go into the left tree to find x
             remove = removeFromTree(left, x);
+            //assemble the tree
             t.assemble(root, left, right);
+            //if x is greater than the root
         } else if (comp > 0) {
+            //disassemble the tree
             root = t.disassemble(left, right);
+            //recursively go into the right tree to find x
             remove = removeFromTree(right, x);
+            //assemble the tree
             t.assemble(root, left, right);
+            //if x is equal to the root
         } else if (comp == 0) {
+            //disassemble the tree
             root = t.disassemble(left, right);
+            //set the remove variable equal to the root
             remove = root;
+            //if the size of the right tree and the size of the left tree is greater than 1
             if (left.size() > 0 && right.size() > 0) {
+                //set root equal to the smallest variable in the right tree
                 root = removeSmallest(right);
+                //assemble the tree
                 t.assemble(root, left, right);
+                //if size of left tree is greater than 0 and the right is not
             } else if (left.size() > 0 && right.size() == 0) {
+                //let left be transfered to t
                 t.transferFrom(left);
+                //if the size of right tree is greater than 0 and the left is not
             } else if (left.size() == 0 && right.size() > 0) {
+                //let the right be transfered to t
                 t.transferFrom(right);
             }
-
         }
-
+        //return the removed label
         return remove;
     }
 
@@ -183,7 +242,7 @@ public class Set3a<T extends Comparable<T>> extends SetSecondary<T> {
      */
     private void createNewRep() {
 
-        // TODO - fill in body p
+        this.tree = new BinaryTree1<T>();
 
     }
 
@@ -245,7 +304,8 @@ public class Set3a<T extends Comparable<T>> extends SetSecondary<T> {
         assert x != null : "Violation of: x is not null";
         assert !this.contains(x) : "Violation of: x is not in this";
 
-        // TODO - fill in body p
+        //use insertInTree for this method
+        insertInTree(this.tree, x);
 
     }
 
@@ -254,6 +314,7 @@ public class Set3a<T extends Comparable<T>> extends SetSecondary<T> {
         assert x != null : "Violation of: x is not null";
         assert this.contains(x) : "Violation of: x is in this";
 
+        //use removeFromTree to remove x from the tree
         return removeFromTree(this.tree, x);
     }
 
@@ -261,26 +322,22 @@ public class Set3a<T extends Comparable<T>> extends SetSecondary<T> {
     public final T removeAny() {
         assert this.size() > 0 : "Violation of: this /= empty_set";
 
-        // TODO - fill in body p
-
-        // This line added just to make the component compilable.
-        return null;
+        //use removeSmallest for this method
+        return removeSmallest(this.tree);
     }
 
     @Override
     public final boolean contains(T x) {
         assert x != null : "Violation of: x is not null";
 
+        //use isInTree to check and see if x exists within the tree
         return isInTree(this.tree, x);
     }
 
     @Override
     public final int size() {
 
-        // TODO - fill in body p
-
-        // This line added just to make the component compilable.
-        return 0;
+        return this.tree.size();
     }
 
     @Override
@@ -289,3 +346,4 @@ public class Set3a<T extends Comparable<T>> extends SetSecondary<T> {
     }
 
 }
+
