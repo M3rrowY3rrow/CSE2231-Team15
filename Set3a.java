@@ -220,7 +220,7 @@ public class Set3a<T extends Comparable<T>> extends SetSecondary<T> {
      */
     private void createNewRep() {
 
-        // TODO - fill in body p
+        this.tree = new BinaryTree1<T>();
 
     }
 
