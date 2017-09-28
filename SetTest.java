@@ -1,17 +1,21 @@
+import static org.junit.Assert.assertEquals;
+
+import org.junit.Test;
+
 import components.set.Set;
 
 /**
  * JUnit test fixture for {@code Set<String>}'s constructor and kernel methods.
- * 
+ *
  * @author Put your name here
- * 
+ *
  */
 public abstract class SetTest {
 
     /**
      * Invokes the appropriate {@code Set} constructor for the implementation
      * under test and returns the result.
-     * 
+     *
      * @return the new set
      * @ensures constructorTest = {}
      */
@@ -20,7 +24,7 @@ public abstract class SetTest {
     /**
      * Invokes the appropriate {@code Set} constructor for the reference
      * implementation and returns the result.
-     * 
+     *
      * @return the new set
      * @ensures constructorRef = {}
      */
@@ -29,7 +33,7 @@ public abstract class SetTest {
     /**
      * Creates and returns a {@code Set<String>} of the implementation under
      * test type with the given entries.
-     * 
+     *
      * @param args
      *            the entries for the set
      * @return the constructed set
@@ -39,7 +43,8 @@ public abstract class SetTest {
     private Set<String> createFromArgsTest(String... args) {
         Set<String> set = this.constructorTest();
         for (String s : args) {
-            assert !set.contains(s) : "Violation of: every entry in args is unique";
+            assert !set.contains(
+                    s) : "Violation of: every entry in args is unique";
             set.add(s);
         }
         return set;
@@ -48,7 +53,7 @@ public abstract class SetTest {
     /**
      * Creates and returns a {@code Set<String>} of the reference implementation
      * type with the given entries.
-     * 
+     *
      * @param args
      *            the entries for the set
      * @return the constructed set
@@ -58,7 +63,8 @@ public abstract class SetTest {
     private Set<String> createFromArgsRef(String... args) {
         Set<String> set = this.constructorRef();
         for (String s : args) {
-            assert !set.contains(s) : "Violation of: every entry in args is unique";
+            assert !set.contains(
+                    s) : "Violation of: every entry in args is unique";
             set.add(s);
         }
         return set;
@@ -222,5 +228,113 @@ public abstract class SetTest {
         assertEquals(qExpected, q);
         assertEquals(in, false);
     }
-}
 
+    /*
+     * Test cases for size.
+     */
+    @Test
+    public void testSizeBoundary() {
+        /*
+         * Set up variables
+         */
+        Set<String> q = this.constructorTest();
+        Set<String> qExpected = this.constructorRef();
+        /*
+         * Assert that values of variables match expectations
+         */
+        assertEquals(q.size(), qExpected.size());
+    }
+
+    @Test
+    public void testSizeRoutine() {
+        /*
+         * Set up variables
+         */
+        Set<String> q = this.createFromArgsTest("a", "b", "c", "d");
+        Set<String> qExpected = this.createFromArgsRef("a", "b", "c", "d");
+        /*
+         * Assert that values of variables match expectations
+         */
+        assertEquals(q.size(), qExpected.size());
+    }
+
+    /*
+     * Test cases for add.
+     */
+
+    @Test
+    public void testAddBoundary() {
+        /*
+         * Set up variables
+         */
+        Set<String> q = this.constructorTest();
+        Set<String> qExpected = this.createFromArgsRef("a");
+        /*
+         * Call method under test
+         */
+        q.add("a");
+        /*
+         * Assert that values of variables match expectations
+         */
+        assertEquals(qExpected, q);
+    }
+
+    @Test
+    public void testAddRoutine() {
+        /*
+         * Set up variables
+         */
+        Set<String> q = this.createFromArgsTest("a", "b", "c", "d");
+        Set<String> qExpected = this.createFromArgsRef("e", "a", "b", "c", "d");
+        /*
+         * Call method under test
+         */
+        q.add("e");
+        /*
+         * Assert that values of variables match expectations
+         */
+        assertEquals(qExpected, q);
+    }
+
+    /*
+     * Test cases for removeAny.
+     */
+
+    @Test
+    public void testRemoveAnyBoundary() {
+        /*
+         * Set up variables
+         */
+        Set<String> q = this.createFromArgsTest("a");
+        Set<String> qExpected = this.createFromArgsRef("a");
+        /*
+         * Call method under test
+         */
+        String item = q.removeAny();
+        String itemExp = qExpected.removeAny();
+        /*
+         * Assert that values of variables match expectations
+         */
+        assertEquals(qExpected, q);
+        assertEquals(itemExp, item);
+    }
+
+    @Test
+    public void testRemoveAnyRoutine() {
+        /*
+         * Set up variables
+         */
+        Set<String> q = this.createFromArgsTest("a", "b", "c", "d");
+        Set<String> qExpected = this.createFromArgsRef("a", "b", "c", "d");
+        /*
+         * Call method under test
+         */
+        String item = q.removeAny();
+        String itemExp = qExpected.remove(item);
+        /*
+         * Assert that values of variables match expectations
+         */
+        assertEquals(qExpected, q);
+        assertEquals(itemExp, item);
+    }
+}
