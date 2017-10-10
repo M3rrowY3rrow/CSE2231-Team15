@@ -9,16 +9,16 @@ import components.sortingmachine.SortingMachine;
 /**
  * JUnit test fixture for {@code SortingMachine<String>}'s constructor and
  * kernel methods.
- * 
- * @author Put your name here
- * 
+ *
+ * @author Prem Methuku, Joe Park
+ *
  */
 public abstract class SortingMachineTest {
 
     /**
      * Invokes the appropriate {@code SortingMachine} constructor for the
      * implementation under test and returns the result.
-     * 
+     *
      * @param order
      *            the {@code Comparator} defining the order for {@code String}
      * @return the new {@code SortingMachine}
@@ -31,7 +31,7 @@ public abstract class SortingMachineTest {
     /**
      * Invokes the appropriate {@code SortingMachine} constructor for the
      * reference implementation and returns the result.
-     * 
+     *
      * @param order
      *            the {@code Comparator} defining the order for {@code String}
      * @return the new {@code SortingMachine}
@@ -42,10 +42,10 @@ public abstract class SortingMachineTest {
             Comparator<String> order);
 
     /**
-     * 
+     *
      * Creates and returns a {@code SortingMachine<String>} of the
      * implementation under test type with the given entries and mode.
-     * 
+     *
      * @param order
      *            the {@code Comparator} defining the order for {@code String}
      * @param insertionMode
@@ -71,10 +71,10 @@ public abstract class SortingMachineTest {
     }
 
     /**
-     * 
+     *
      * Creates and returns a {@code SortingMachine<String>} of the reference
      * implementation type with the given entries and mode.
-     * 
+     *
      * @param order
      *            the {@code Comparator} defining the order for {@code String}
      * @param insertionMode
@@ -139,5 +139,136 @@ public abstract class SortingMachineTest {
 
     // TODO - add test cases for add, changeToExtractionMode, removeFirst,
     // isInInsertionMode, order, and size
+
+    /*
+     * Test cases for ChangeToExtractionMode
+     */
+    @Test
+    public final void testChangeToExtractionModeBoundary() {
+        SortingMachine<String> m = this.constructorTest(ORDER);
+        SortingMachine<String> mExpected = this.constructorRef(ORDER);
+        /*
+         * Calling method under test
+         */
+        m.changeToExtractionMode();
+        mExpected.changeToExtractionMode();
+        /*
+         * Calling assert statements
+         */
+        assertEquals(mExpected.isInInsertionMode(), m.isInInsertionMode());
+    }
+
+    @Test
+    public final void testChangeToExtractionModeRoutine() {
+        SortingMachine<String> m = this.createFromArgsTest(ORDER, true, "green",
+                "red");
+        SortingMachine<String> mExpected = this.createFromArgsRef(ORDER, true,
+                "green", "red");
+        /*
+         * Calling method under test
+         */
+        m.changeToExtractionMode();
+        mExpected.changeToExtractionMode();
+        /*
+         * Calling assert statements
+         */
+        assertEquals(mExpected.isInInsertionMode(), m.isInInsertionMode());
+    }
+
+    /*
+     * Test cases for IsInInsertionMode
+     */
+
+    @Test
+    public final void testIsInInsertionModeBoundary() {
+        SortingMachine<String> m = this.constructorTest(ORDER);
+        SortingMachine<String> mExpected = this.constructorRef(ORDER);
+        /*
+         * Calling assert statements
+         */
+        assertEquals(mExpected.isInInsertionMode(), m.isInInsertionMode());
+    }
+
+    @Test
+    public final void testIsInInsertionModeRoutine() {
+        SortingMachine<String> m = this.createFromArgsTest(ORDER, true, "green",
+                "red");
+        SortingMachine<String> mExpected = this.createFromArgsRef(ORDER, true,
+                "green", "red");
+        /*
+         * Calling assert statements
+         */
+        assertEquals(mExpected.isInInsertionMode(), m.isInInsertionMode());
+    }
+
+    @Test
+    public final void testIsInInsertionModeBoundary2() {
+        SortingMachine<String> m = this.createFromArgsTest(ORDER, false);
+        SortingMachine<String> mExpected = this.createFromArgsRef(ORDER, false);
+        /*
+         * Calling assert statements
+         */
+        assertEquals(mExpected.isInInsertionMode(), m.isInInsertionMode());
+    }
+
+    @Test
+    public final void testIsInInsertionModeRoutine2() {
+        SortingMachine<String> m = this.createFromArgsTest(ORDER, false,
+                "green", "red");
+        SortingMachine<String> mExpected = this.createFromArgsRef(ORDER, false,
+                "green", "red");
+        /*
+         * Calling assert statements
+         */
+        assertEquals(mExpected.isInInsertionMode(), m.isInInsertionMode());
+    }
+
+    /*
+     * Test cases for Size
+     */
+
+    @Test
+    public final void testSizeBoundaryInsertionMode() {
+        SortingMachine<String> m = this.constructorTest(ORDER);
+        SortingMachine<String> mExpected = this.constructorRef(ORDER);
+        /*
+         * Calling assert statements
+         */
+        assertEquals(mExpected.size(), m.size());
+    }
+
+    @Test
+    public final void testSizeRoutineInsertionMode() {
+        SortingMachine<String> m = this.createFromArgsTest(ORDER, true, "green",
+                "red");
+        SortingMachine<String> mExpected = this.createFromArgsRef(ORDER, true,
+                "green", "red");
+        /*
+         * Calling assert statements
+         */
+        assertEquals(mExpected.size(), m.size());
+    }
+
+    @Test
+    public final void testSizeBoundaryExtractionMode() {
+        SortingMachine<String> m = this.createFromArgsTest(ORDER, false);
+        SortingMachine<String> mExpected = this.createFromArgsRef(ORDER, false);
+        /*
+         * Calling assert statements
+         */
+        assertEquals(mExpected.size(), m.size());
+    }
+
+    @Test
+    public final void testSizeRoutineExtractionMode() {
+        SortingMachine<String> m = this.createFromArgsTest(ORDER, false,
+                "green", "red");
+        SortingMachine<String> mExpected = this.createFromArgsRef(ORDER, false,
+                "green", "red");
+        /*
+         * Calling assert statements
+         */
+        assertEquals(mExpected.size(), m.size());
+    }
 
 }
