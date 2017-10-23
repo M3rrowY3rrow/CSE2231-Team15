@@ -180,7 +180,7 @@ public class List3<T> extends ListSecondary<T> {
      */
     public List3() {
 
-        // TODO - fill in body j
+        this.createNewRep();
 
         assert this.conventionHolds();
     }
@@ -235,11 +235,17 @@ public class List3<T> extends ListSecondary<T> {
     public final T removeRightFront() {
         assert this.rightLength() > 0 : "Violation of: this.right /= <>";
 
-        // TODO - fill in body j
+        //Point lastLeft at the node next to the rightFront and vice versa with
+        //the previous for the node next to rightFront
+        Node rf = this.lastLeft.next;
+        Node nrf = rf.next;
+        this.lastLeft.next = nrf;
+        nrf.previous = this.lastLeft;
+        this.rightLength--;
 
         assert this.conventionHolds();
         // Fix this line to return the result after checking the convention.
-        return null;
+        return rf.data;
     }
 
     @Override
@@ -254,7 +260,11 @@ public class List3<T> extends ListSecondary<T> {
     @Override
     public final void moveToStart() {
 
-        // TODO - fill in body j
+        //point lastLeft to the first smart node's next to move to the front
+        this.lastLeft = this.preStart.next;
+        //adjust the lengths of right and left based on this change
+        this.rightLength = this.leftLength - 1 + this.rightLength;
+        this.leftLength = 1;
 
         assert this.conventionHolds();
     }
@@ -272,11 +282,11 @@ public class List3<T> extends ListSecondary<T> {
     @Override
     public final int rightLength() {
 
-        // TODO - fill in body j
+        //return this.rightLength to find the right length
 
         assert this.conventionHolds();
         // Fix this line to return the result after checking the convention.
-        return 0;
+        return this.rightLength;
     }
 
     @Override
@@ -349,7 +359,12 @@ public class List3<T> extends ListSecondary<T> {
     public final void retreat() {
         assert this.leftLength() > 0 : "Violation of: this.left /= <>";
 
-        // TODO - fill in body j
+        //point lastLeft to the original lastLeft previous
+        Node ol = this.lastLeft;
+        this.lastLeft = ol.previous;
+        //adjust the lengths considering the change
+        this.leftLength--;
+        this.rightLength++;
 
         assert this.conventionHolds();
     }
