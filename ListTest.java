@@ -7,7 +7,7 @@ import components.list.List;
 /**
  * JUnit test fixture for {@code List<String>}'s constructor and kernel methods.
  *
- * @author Put your name here
+ * @author Prem Methuku, Joe Park
  *
  */
 public abstract class ListTest {
@@ -796,7 +796,7 @@ public abstract class ListTest {
     }
 
     @Test
-    public final void testRetreatBoundary() {
+    public final void testRetreatBoundary1() {
         /*
          * Set up variables
          */
@@ -810,6 +810,42 @@ public abstract class ListTest {
          * Assert that values of variables match expectations
          */
         assertEquals(list2.rightFront(), list1.rightFront());
+        assertEquals(list2, list1);
+    }
+
+    @Test
+    public final void testRetreatBoundary2() {
+        /*
+         * Set up variables
+         */
+        List<String> list1 = this.createFromArgsTest(1, "yellow");
+        List<String> list2 = this.createFromArgsRef(0, "yellow");
+        /*
+         * Call method under test
+         */
+        list1.retreat();
+        /*
+         * Assert that values of variables match expectations
+         */
+        assertEquals(list2, list1);
+    }
+
+    @Test
+    public final void testRetreatBounary3() {
+        /*
+         * Set up variables
+         */
+        List<String> list1 = this.createFromArgsTest(1, "yellow", "orange",
+                "purple", "red");
+        List<String> list2 = this.createFromArgsRef(0, "yellow", "orange",
+                "purple", "red");
+        /*
+         * Call method under test
+         */
+        list1.retreat();
+        /*
+         * Assert that values of variables match expectations
+         */
         assertEquals(list2, list1);
     }
 
