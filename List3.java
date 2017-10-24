@@ -171,7 +171,13 @@ public class List3<T> extends ListSecondary<T> {
      */
     private void createNewRep() {
 
-        // TODO - fill in body p
+        this.preStart = new Node();
+        this.postFinish = new Node();
+        this.lastLeft = this.preStart;
+        this.preStart.next = this.postFinish;
+        this.postFinish.previous = this.preStart;
+        this.leftLength = 0;
+        this.rightLength = 0;
 
     }
 
@@ -226,9 +232,21 @@ public class List3<T> extends ListSecondary<T> {
     public final void addRightFront(T x) {
         assert x != null : "Violation of: x is not null";
 
-        // TODO - fill in body p
-
+        //Gets the old right from the front
+        Node getRight = this.lastLeft.next;
+        //Creates a new right in the front
+        Node newRight = new Node();
+        //set the old one to new one
+        //and process all the information to the new right node
+        getRight.previous = newRight;
+        newRight.data = x;
+        newRight.previous = this.lastLeft;
+        newRight.next = getRight;
+        //set this pointing to the new created node
+        this.lastLeft.next = newRight;
+        this.rightLength++;
         assert this.conventionHolds();
+
     }
 
     @Override
@@ -251,8 +269,11 @@ public class List3<T> extends ListSecondary<T> {
     @Override
     public final void advance() {
         assert this.rightLength() > 0 : "Violation of: this.right /= <>";
-
-        // TODO - fill in body p
+        //set last left to the node left to previous last node
+        // increment left length and decrement right
+        this.lastLeft = this.lastLeft.next;
+        this.leftLength++;
+        this.rightLength--;
 
         assert this.conventionHolds();
     }
@@ -261,10 +282,10 @@ public class List3<T> extends ListSecondary<T> {
     public final void moveToStart() {
 
         //point lastLeft to the first smart node's next to move to the front
-        this.lastLeft = this.preStart.next;
+        this.lastLeft = this.preStart;
         //adjust the lengths of right and left based on this change
-        this.rightLength = this.leftLength - 1 + this.rightLength;
-        this.leftLength = 1;
+        this.rightLength = this.leftLength + this.rightLength;
+        this.leftLength = 0;
 
         assert this.conventionHolds();
     }
@@ -272,20 +293,14 @@ public class List3<T> extends ListSecondary<T> {
     @Override
     public final int leftLength() {
 
-        // TODO - fill in body p
-
         assert this.conventionHolds();
-        // Fix this line to return the result after checking the convention.
-        return 0;
+        return this.leftLength;
     }
 
     @Override
     public final int rightLength() {
 
-        //return this.rightLength to find the right length
-
         assert this.conventionHolds();
-        // Fix this line to return the result after checking the convention.
         return this.rightLength;
     }
 
@@ -350,8 +365,11 @@ public class List3<T> extends ListSecondary<T> {
     @Override
     public final void moveToFinish() {
 
-        // TODO - fill in body p
-
+        //point lastLeft to the original postFinish previous
+        this.lastLeft = this.postFinish.previous;
+        //adjust the lengths considering the change
+        this.leftLength += this.rightLength;
+        this.rightLength = 0;
         assert this.conventionHolds();
     }
 
