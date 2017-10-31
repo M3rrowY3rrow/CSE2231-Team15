@@ -102,7 +102,7 @@ public class Program2 extends ProgramSecondary {
      */
     private void createNewRep() {
 
-        this.name = "";
+        this.name = "Unnamed";
         this.context = new Map1L<String, Statement>();
         this.body = new Statement1();
         // Make sure to use Statement1 from the library
@@ -167,10 +167,9 @@ public class Program2 extends ProgramSecondary {
         assert Tokenizer.isIdentifier(n) : ""
                 + "Violation of: n is a valid IDENTIFIER";
 
-        // TODO - fill in body p
-
-        // Fix this line to return the result.
-        return null;
+        String old = this.name;
+        this.name = n;
+        return old;
     }
 
     @Override
@@ -193,10 +192,12 @@ public class Program2 extends ProgramSecondary {
         assert allBlocks(c) : "Violation of: bodies in c"
                 + " are all BLOCK statements";
 
-        // TODO - fill in body p
-
-        // Fix this line to return the result.
-        return null;
+        Map<String, Statement> replace = this.context;
+        Map<String, Statement> temp = this.context.newInstance();
+        Map1L<String, Statement> localC = (Map1L<String, Statement>) c;
+        temp.transferFrom(localC);
+        this.context = temp;
+        return replace;
     }
 
     @Override
@@ -212,10 +213,9 @@ public class Program2 extends ProgramSecondary {
         assert b instanceof Statement1 : "Violation of: b is a Statement1";
         assert b.kind() == Kind.BLOCK : "Violation of: b is a BLOCK statement";
 
-        // TODO - fill in body p
-
-        // Fix this line to return the result.
-        return null;
+        Statement old = this.body;
+        this.body = b;
+        return old;
     }
 
 }
