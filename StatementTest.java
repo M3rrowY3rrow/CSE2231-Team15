@@ -741,7 +741,7 @@ public abstract class StatementTest {
         Statement blockRef = this.createFromFileRef(FILE_NAME_2);
         Statement sTest = blockTest.removeFromBlock(0);
         Statement sRef = blockRef.removeFromBlock(0);
-        String nRef = sRef.disassembleCall();
+        String nRef = sRef.disassembleCall();d
 
         /*
          * The call
