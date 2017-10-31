@@ -162,10 +162,11 @@ public class Statement2 extends StatementSecondary {
     @Override
     public final Kind kind() {
 
-        // TODO - fill in body p
-
-        // Fix this line to return the result.
-        return null;
+        Sequence<Tree<StatementLabel>> temp = this.rep.newSequenceOfTree();
+        StatementLabel getLabel = this.rep.disassemble(temp);
+        Kind getKind = getLabel.kind;
+        this.rep.assemble(getLabel, temp);
+        return getKind;
     }
 
     @Override
@@ -205,9 +206,10 @@ public class Statement2 extends StatementSecondary {
          * code.
          */
         Statement2 s = this.newInstance();
-
-        // TODO - fill in body p
-
+        Sequence<Tree<StatementLabel>> temp = this.rep.newSequenceOfTree();
+        StatementLabel getLabel = this.rep.disassemble(temp);
+        s.rep = temp.remove(pos);
+        this.rep.assemble(getLabel, temp);
         return s;
     }
 
@@ -271,7 +273,16 @@ public class Statement2 extends StatementSecondary {
         assert s2
                 .kind() == Kind.BLOCK : "Violation of: [s2 is a BLOCK statement]";
 
-        // TODO - fill in body p
+        StatementLabel label = new StatementLabel(Kind.IF_ELSE, c);
+        Sequence<Tree<StatementLabel>> temp = this.rep.newSequenceOfTree();
+        Statement2 localS1 = (Statement2) s1;
+        Statement2 localS2 = (Statement2) s2;
+        temp.add(0, localS1.rep);
+        temp.add(1, localS2.rep);
+        this.rep.assemble(label, temp);
+
+        localS1.createNewRep();
+        localS2.createNewRep();
 
     }
 
@@ -304,7 +315,12 @@ public class Statement2 extends StatementSecondary {
         assert s instanceof Statement2 : "Violation of: s is a Statement2";
         assert s.kind() == Kind.BLOCK : "Violation of: [s is a BLOCK statement]";
 
-        // TODO - fill in body p
+        StatementLabel label = new StatementLabel(Kind.WHILE, c);
+        Sequence<Tree<StatementLabel>> children = this.rep.newSequenceOfTree();
+        Statement2 localS = (Statement2) s;
+        children.add(0, localS.rep);
+        this.rep.assemble(label, children);
+        localS.createNewRep();
 
     }
 
@@ -331,8 +347,8 @@ public class Statement2 extends StatementSecondary {
         assert Tokenizer.isIdentifier(inst) : ""
                 + "Violation of: inst is a valid IDENTIFIER";
 
-        // TODO - fill in body p
-
+        StatementLabel label = new StatementLabel(Kind.CALL, inst);
+        this.rep.assemble(label, this.rep.newSequenceOfTree());
     }
 
     @Override
