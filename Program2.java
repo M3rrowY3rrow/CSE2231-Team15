@@ -102,7 +102,9 @@ public class Program2 extends ProgramSecondary {
      */
     private void createNewRep() {
 
-        // TODO - fill in body j
+        this.name = "";
+        this.context = new Map1L<String, Statement>();
+        this.body = new Statement1();
         // Make sure to use Statement1 from the library
         // Use Map1L for the context if you want the asserts below to match
 
@@ -174,10 +176,8 @@ public class Program2 extends ProgramSecondary {
     @Override
     public final Map<String, Statement> newContext() {
 
-        // TODO - fill in body j
-
-        // Fix this line to return the result.
-        return null;
+        // return a new map for a new context
+        return new Map1L<String, Statement>();
     }
 
     @Override
@@ -202,10 +202,8 @@ public class Program2 extends ProgramSecondary {
     @Override
     public final Statement newBody() {
 
-        // TODO - fill in body j
-
-        // Fix this line to return the result.
-        return null;
+        // return a new statement for a new body
+        return new Statement1();
     }
 
     @Override
