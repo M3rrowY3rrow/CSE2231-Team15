@@ -5,13 +5,14 @@ import components.simplewriter.SimpleWriter;
 import components.simplewriter.SimpleWriter1L;
 import components.statement.Statement;
 import components.statement.Statement1;
+import components.utilities.Reporter;
 import components.utilities.Tokenizer;
 
 /**
  * Layered implementation of secondary methods {@code parse} and
  * {@code parseBlock} for {@code Statement}.
  *
- * @author Put your name here
+ * @author Prem Methuku, Joe Park
  *
  */
 public final class Statement1Parse1 extends Statement1 {
@@ -88,7 +89,32 @@ public final class Statement1Parse1 extends Statement1 {
         assert tokens.length() > 0 && tokens.front().equals("WHILE") : ""
                 + "Violation of: <\"WHILE\"> is proper prefix of tokens";
 
-        // TODO - fill in body p
+        s.clear();
+
+        String getWhile1 = tokens.dequeue();
+        Reporter.assertElseFatalError(getWhile1.equals("WHILE"),
+                "Error: \"WHILE\" not found ");
+
+        String getCond = tokens.dequeue();
+        Reporter.assertElseFatalError(Tokenizer.isCondition(getCond),
+                "Error: CONDITION not found ");
+
+        String getDo = tokens.dequeue();
+        Reporter.assertElseFatalError(getDo.equals("DO"),
+                "Error: \"DO\" not found ");
+
+        Statement block = s.newInstance();
+        Condition c = parseCondition(getCond);
+        block.parseBlock(tokens);
+        s.assembleWhile(c, block);
+
+        String getEnd = tokens.dequeue();
+        Reporter.assertElseFatalError(getEnd.equals("END"),
+                "Error: \"END\" not found ");
+
+        String getWhile2 = tokens.dequeue();
+        Reporter.assertElseFatalError(getWhile2.equals("WHILE"),
+                "Error: \"WHILE\" not found ");
 
     }
 
@@ -114,9 +140,7 @@ public final class Statement1Parse1 extends Statement1 {
         assert tokens.length() > 0
                 && Tokenizer.isIdentifier(tokens.front()) : ""
                         + "Violation of: identifier string is proper prefix of tokens";
-
         // TODO - fill in body j
-
     }
 
     /*
@@ -140,7 +164,14 @@ public final class Statement1Parse1 extends Statement1 {
         assert tokens.length() > 0 : ""
                 + "Violation of: Tokenizer.END_OF_INPUT is a suffix of tokens";
 
-        // TODO - fill in body p
+        String getFirst = tokens.front();
+        if (getFirst.equals("IF")) {
+            parseIf(tokens, this);
+        } else if (getFirst.equals("WHILE")) {
+            parseWhile(tokens, this);
+        } else {
+            parseCall(tokens, this);
+        }
 
     }
 
