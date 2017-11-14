@@ -61,7 +61,42 @@ public final class Statement1Parse1 extends Statement1 {
         assert tokens.length() > 0 && tokens.front().equals("IF") : ""
                 + "Violation of: <\"IF\"> is proper prefix of tokens";
 
-        // TODO - fill in body j
+        s.clear();
+
+        String getIf1 = tokens.dequeue();
+        Reporter.assertElseFatalError(getIf1.equals("IF"),
+                "Error: \"IF\" not found ");
+
+        String getCond = tokens.dequeue();
+        Reporter.assertElseFatalError(Tokenizer.isCondition(getCond),
+                "Error: CONDITION not found ");
+
+        String getThen = tokens.dequeue();
+        Reporter.assertElseFatalError(getThen.equals("THEN"),
+                "Error: \"THEN\" not found ");
+
+        Statement block1 = s.newInstance();
+        Condition c = parseCondition(getCond);
+        block1.parseBlock(tokens);
+        if (tokens.front().equals("ELSE")) {
+            String getElse = tokens.dequeue();
+            Reporter.assertElseFatalError(getElse.equals("ELSE"),
+                    "Error: \"ELSE\" not found ");
+
+            Statement block2 = s.newInstance();
+            block2.parseBlock(tokens);
+            s.assembleIfElse(c, block1, block2);
+        } else {
+            s.assembleIf(c, block1);
+        }
+
+        String getEnd = tokens.dequeue();
+        Reporter.assertElseFatalError(getEnd.equals("END"),
+                "Error: \"END\" not found ");
+
+        String getIf2 = tokens.dequeue();
+        Reporter.assertElseFatalError(getIf2.equals("IF"),
+                "Error: \"IF\" not found ");
 
     }
 
@@ -140,7 +175,19 @@ public final class Statement1Parse1 extends Statement1 {
         assert tokens.length() > 0
                 && Tokenizer.isIdentifier(tokens.front()) : ""
                         + "Violation of: identifier string is proper prefix of tokens";
-        // TODO - fill in body j
+        
+        String getIdentifier = tokens.dequeue();
+        boolean isInstr = Tokenizer.isIdentifier(getIdentifier);
+
+        s.clear();
+        
+        if (isInstr) {
+            s.assembleCall(getIdentifier);
+        }
+        else {
+            Reporter.assertElseFatalError(isInstr,
+                "Error: CALL to nonexistant instruction ");
+        }
     }
 
     /*
@@ -181,7 +228,14 @@ public final class Statement1Parse1 extends Statement1 {
         assert tokens.length() > 0 : ""
                 + "Violation of: Tokenizer.END_OF_INPUT is a suffix of tokens";
 
-        // TODO - fill in body j
+        String getFirst = tokens.front();
+        if (getFirst.equals("IF")) {
+            parseIf(tokens, this);
+        } else if (getFirst.equals("WHILE")) {
+            parseWhile(tokens, this);
+        } else {
+            parseCall(tokens, this);
+        }
 
     }
 
