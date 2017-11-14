@@ -7,7 +7,112 @@ import components.statement.Statement;
 import components.statement.Statement1;
 import components.utilities.Reporter;
 import components.utilities.Tokenizer;
+/**
+*WHILE true DO
+  move
+  IF next-is-not-enemy THEN
+  END IF
+  IF random THEN
+    eatcake
+    infect
+  ELSE
+    eatpie
+    turnright
+    look-for-something
+  END IF
+  skip
+END WHILE
 
+WHILE true DO
+  restroombreak
+  IF this-is-not-a-valid-condition THEN
+  END IF
+  IF random THEN
+    turnleft
+    infect
+  ELSE
+    go-for-it
+    turnright
+    look-for-something
+  END IF
+  skip
+END WHILE
+
+WHILE true DO
+  move
+  IF next-is-not-enemy THEN
+  END IF
+  IF random THEN
+    turnleft
+    infect
+  ELSE
+    go-for-it
+    turnright
+    look-for-something
+  END IF
+  skip
+END WHILE
+
+PROGRAM Test IS
+
+  INSTRUCTION one IS
+     move
+     turnleft
+  END one
+  
+  INSTRUCTION two IS
+    one
+    IF next-is-not-empty THEN
+      turnleft
+    ELSE
+      one
+      one
+    END IF
+  END two
+
+BEGIN
+  infect
+  WHILE true DO
+    two
+    IF next-is-empty THEN
+      move
+    END IF
+    two
+    one
+  END WHILE
+END BeachesAreHot
+
+PROGRAM Test IS
+
+  INSTRUCTION one IS
+     move
+     turnleft
+  END one
+  
+  INSTRUCTION two IS
+    one
+    IF next-is-not-empty THEN
+      turnleft
+    ELSE
+      one
+      one
+    END IF
+  END three
+
+BEGIN
+  infect
+  WHILE true DO
+    two
+    IF next-is-empty THEN
+      move
+    END IF
+    two
+    one
+  END WHILE
+END Test
+
+
+*/
 /**
  * Layered implementation of secondary methods {@code parse} and
  * {@code parseBlock} for {@code Statement}.
