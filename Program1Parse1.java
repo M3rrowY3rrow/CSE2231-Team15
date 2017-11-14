@@ -55,10 +55,33 @@ public final class Program1Parse1 extends Program1 {
         assert tokens.length() > 0 && tokens.front().equals("INSTRUCTION") : ""
                 + "Violation of: <\"INSTRUCTION\"> is proper prefix of tokens";
 
-        // TODO - fill in body j
+        String getInstruction = tokens.dequeue();
+        Reporter.assertElseFatalError(getInstruction.equals("INSTRUCTION"),
+                "Error: \"INSTRUCTION\" not found ");
 
-        // This line added just to make the program compilable.
-        return null;
+        String getIdentifier = tokens.dequeue();
+        Reporter.assertElseFatalError(Tokenizer.isIdentifier(getIdentifier),
+                "Error: IDENTIFIER not found ");
+
+        String getIs = tokens.dequeue();
+        Reporter.assertElseFatalError(getIs.equals("IS"),
+                "Error: \"IS\" not found ");
+
+        body.parseBlock(tokens);
+
+        String getEnd = tokens.dequeue();
+        Reporter.assertElseFatalError(getEnd.equals("END"),
+                "Error: \"END\" not found ");
+
+        String getIdentifier2 = tokens.dequeue();
+        Reporter.assertElseFatalError(getIdentifier2.equals(getIdentifier),
+                "Error: IDENTIFIER Doesn't match ");
+
+        String end = tokens.dequeue();
+        Reporter.assertElseFatalError(end.equals(Tokenizer.END_OF_INPUT),
+                "Error: \"### END OF INPUT ###\" not found ");
+
+        return getIdentifier;
     }
 
     /*
