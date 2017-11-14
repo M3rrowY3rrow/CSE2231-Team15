@@ -228,13 +228,24 @@ public final class Statement1Parse1 extends Statement1 {
         assert tokens.length() > 0 : ""
                 + "Violation of: Tokenizer.END_OF_INPUT is a suffix of tokens";
 
+        this.clear();
+        int pos = this.lengthOfBlock();
+
         String getFirst = tokens.front();
+        Statement s = this.newInstance();
+
         if (getFirst.equals("IF")) {
-            parseIf(tokens, this);
+            parseIf(tokens, s);
+            this.addToBlock(pos, s);
+            this.parseBlock(tokens);
         } else if (getFirst.equals("WHILE")) {
-            parseWhile(tokens, this);
+            parseWhile(tokens, s);
+            this.addToBlock(pos, s);
+            this.parseBlock(tokens);
         } else {
-            parseCall(tokens, this);
+            parseCall(tokens, s);
+            this.addToBlock(pos, s);
+            this.parseBlock(tokens);
         }
 
     }
