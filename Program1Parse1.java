@@ -1,3 +1,4 @@
+import components.map.Map;
 import components.program.Program;
 import components.program.Program1;
 import components.queue.Queue;
@@ -6,12 +7,13 @@ import components.simplereader.SimpleReader1L;
 import components.simplewriter.SimpleWriter;
 import components.simplewriter.SimpleWriter1L;
 import components.statement.Statement;
+import components.utilities.Reporter;
 import components.utilities.Tokenizer;
 
 /**
  * Layered implementation of secondary method {@code parse} for {@code Program}.
  *
- * @author Put your name here
+ * @author Prem Methuku, Joe Park
  *
  */
 public final class Program1Parse1 extends Program1 {
@@ -88,8 +90,49 @@ public final class Program1Parse1 extends Program1 {
         assert tokens.length() > 0 : ""
                 + "Violation of: Tokenizer.END_OF_INPUT is a suffix of tokens";
 
-        // TODO - fill in body p, i believe one of the labs we did where yours worked but mine didn't covered this. When u realize which one it was, can u send it to me?
+        String getProgram = tokens.dequeue();
+        Reporter.assertElseFatalError(getProgram.equals("PROGRAM"),
+                "Error: \"PROGRAM\" not found ");
 
+        String getIdentifier = tokens.dequeue();
+        Reporter.assertElseFatalError(Tokenizer.isIdentifier(getIdentifier),
+                "Error: IDENTIFIER not found ");
+
+        String getIs = tokens.dequeue();
+        Reporter.assertElseFatalError(getIs.equals("IS"),
+                "Error: \"IS\" not found ");
+
+        this.replaceName(getIdentifier);
+
+        Map<String, Statement> ctxt = this.newContext();
+        while (tokens.front().equals("INSTRUCTION")) {
+            Statement body = this.newBody();
+            String value = parseInstruction(tokens, body);
+            Reporter.assertElseFatalError(!ctxt.hasKey(value),
+                    "Error: Instruction is already defined");
+            ctxt.add(value, body);
+        }
+        this.replaceContext(ctxt);
+
+        String getBegin = tokens.dequeue();
+        Reporter.assertElseFatalError(getBegin.equals("BEGIN"),
+                "Error: \"BEGIN\" not found ");
+
+        Statement pBody = this.newBody();
+        pBody.parseBlock(tokens);
+        this.replaceBody(pBody);
+
+        String getEnd = tokens.dequeue();
+        Reporter.assertElseFatalError(getEnd.equals("END"),
+                "Error: \"END\" not found ");
+
+        String getIdentifier2 = tokens.dequeue();
+        Reporter.assertElseFatalError(getIdentifier2.equals(getIdentifier),
+                "Error: IDENTIFIER Doesn't match ");
+
+        String end = tokens.dequeue();
+        Reporter.assertElseFatalError(end.equals(Tokenizer.END_OF_INPUT),
+                "Error: \"### END OF INPUT ###\" not found ");
     }
 
     /*
